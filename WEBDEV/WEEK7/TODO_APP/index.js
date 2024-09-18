@@ -10,6 +10,7 @@ const passwordValidation = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 );
 mongoose.connect(
+  //mongo db connection url
   "mongodb+srv://vijayvadaboina:lYqUwxQiAK8erRns@cluster0.4ietk.mongodb.net/todo-app-database"
 );
 const app = express();
