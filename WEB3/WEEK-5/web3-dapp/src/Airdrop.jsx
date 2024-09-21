@@ -1,12 +1,18 @@
-import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { useConnection } from "@solana/wallet-adapter-react";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
 export function Airdrop() {
   const wallet = useWallet();
-  const { Connection } = useConnection();
+  const { connection } = useConnection();
 
   async function sendAirdropToUser() {
-    const amount = document.getElementById("publicKey").value;
-    await Connection.requestAirdrop(wallet.publicKey, amount * 100000000);
-    alert("airdropped sol");
+    let amount = document.getElementById("publicKey").value;
+    await connection.requestAirdrop(
+      wallet.publicKey,
+      amount * LAMPORTS_PER_SOL
+    );
+    alert("airdropped " + amount + "Sol to " + wallet.publicKey.toBase58());
   }
   return (
     <div>
