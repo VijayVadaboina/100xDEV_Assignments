@@ -1,10 +1,12 @@
 const { Router } = require("express");
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "HELLOVIJAY";
+const { JWT_ADMIN_PASSWORD } = require("../config");
+const { adminMiddleware } = require("../middleware/admin");
 const adminRouter = Router();
 const { adminModel, courseModel } = require("../db");
 const bcrypt = require("bcrypt");
 const { z } = require("zod");
+const course = require("./course");
 // const passwordValidation = new RegExp(
 //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 // );
@@ -87,7 +89,7 @@ function auth(req, res, next) {
 
 adminRouter.post("/course", auth, async function (req, res) {
   try {
-    const adminId = req.adminId;
+    const adminId = req.userId;
     const { title, description, price, imageUrl } = req.body;
 
     await courseModel.create({
@@ -99,6 +101,7 @@ adminRouter.post("/course", auth, async function (req, res) {
     });
     res.json({
       message: "Course added successfully",
+      course: course._id,
     });
   } catch (e) {
     console.log(e);
